@@ -21,7 +21,8 @@ app.use('*', function(req, res, next) {
   next();
 });
 
-app.use("/", statusRoutes);
+app.use("/", express.static(path.join(__dirname, 'home')));
+app.use("/status", statusRoutes)
 app.use("/tiles", tileRoutes);
 app.use('/style', express.static(path.join(__dirname, 'style')))  
 

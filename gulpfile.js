@@ -1,6 +1,7 @@
 const { src, dest, watch, series, parallel } = require("gulp");
 var del = require("del");
-
+const webpack = require("webpack");
+const webpackConfig = require("./webpack.config.js");
 var ts = require("gulp-typescript");
 const GulpClient = require("gulp");
 var tsProject = ts.createProject("tsconfig.json");
@@ -32,9 +33,35 @@ function copy() {
   );
 }
 
+function build() {
+  // run webpack
+  return new Promise((resolve, reject) => {
+    webpack(webpackConfig, (err, stats) => {
+      if (err) {
+        return reject(err);
+      }
+      if (stats.hasErrors()) {
+        return reject(new Error(stats.compilation.errors.join("\n")));
+      }
+      resolve();
+    });
+  });
+}
+
+function css() {
+  return src("node_modules/mapbox-gl/dist/mapbox-gl.css").pipe(dest("dist/home/"));
+}
+
+function html() {
+  // run the copy
+  return src("src/*.html").pipe(dest("dist/home/"));
+}
+
 exports.clean = clean;
-exports.init = parallel(typeBuild, copy, moveMapping);
+exports.init = parallel(typeBuild, copy, moveMapping, build, css, html);
 
 exports.default = (cb) => {
   watch("src/**/*.ts", typeBuild);
+  watch("src/*.ts", build);
+  watch("src/*.html", series(css, html));
 };
