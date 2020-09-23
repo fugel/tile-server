@@ -2,12 +2,14 @@ const path = require("path");
 
 module.exports = {
   mode: "development",
-  entry: "./src/app.ts",
+  entry: "./src/client/app.ts",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        use: [
+          { loader: "ts-loader", options: { configFile: "wp.tsconfig.json" } },
+        ],
         exclude: /node_modules/,
       },
     ],
@@ -17,6 +19,6 @@ module.exports = {
   },
   output: {
     filename: "app.js",
-    path: path.resolve(__dirname, "dist/home"),
+    path: path.resolve(__dirname, "dist/client"),
   },
 };

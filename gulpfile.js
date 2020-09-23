@@ -28,7 +28,7 @@ function moveMapping(cb) {
 }
 
 function copy() {
-  return src("src/style/**/*.*", { base: "src/style" }).pipe(
+  return src("src/server/style/**/*.*", { base: "src/server/style" }).pipe(
     dest("dist/style")
   );
 }
@@ -49,19 +49,19 @@ function build() {
 }
 
 function css() {
-  return src("node_modules/mapbox-gl/dist/mapbox-gl.css").pipe(dest("dist/home/"));
+  return src("node_modules/mapbox-gl/dist/mapbox-gl.css").pipe(dest("dist/client/"));
 }
 
 function html() {
   // run the copy
-  return src("src/*.html").pipe(dest("dist/home/"));
+  return src("src/client/*.html").pipe(dest("dist/client/"));
 }
 
 exports.clean = clean;
 exports.init = parallel(typeBuild, copy, moveMapping, build, css, html);
 
 exports.default = (cb) => {
-  watch("src/**/*.ts", typeBuild);
-  watch("src/*.ts", build);
-  watch("src/*.html", series(css, html));
+  watch("src/server/**/*.ts", typeBuild);
+  watch("src/client/*.ts", build);
+  watch("src/client/*.html", series(css, html));
 };
