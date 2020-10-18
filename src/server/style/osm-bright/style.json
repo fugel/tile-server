@@ -23,14 +23,14 @@
   "sources": {
     "openmaptiles": {
       "tiles": [
-          "http://localhost:8000/tiles/{z}/{x}/{y}.pbf"
+          "local://tiles/{z}/{x}/{y}.pbf"
       ],
       "type": "vector",
       "maxzoom": 14
   }
   },
-  "sprite": "http://localhost:8000/style/sprites/sprite",
-  "glyphs": "http://localhost:8000/style/font-glyphs/{fontstack}/{range}.pbf",
+  "sprite": "local://style/sprites/sprite",
+  "glyphs": "local://style/font-glyphs/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
